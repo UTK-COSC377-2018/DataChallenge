@@ -1,0 +1,10 @@
+{
+  "Course" : "COSC370",
+  "College" : "College of Engineering",
+  "University" : "University of Tennessee",
+  "Majors" : [
+    "Computer Science",
+    "Computer Engineering",
+    "Electrical Engineering"
+    ]
+}

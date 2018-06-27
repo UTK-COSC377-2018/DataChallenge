@@ -24,7 +24,7 @@ install:
     - source activate testenv
 
 script:
-    - pytest --cov=./DataChallenge
+    - pytest --cov-report term-missing --cov=./DataChallenge -v
 
 after_success:
     - coveralls

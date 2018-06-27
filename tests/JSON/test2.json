@@ -1,0 +1,9 @@
+{
+  "State" : "Tennessee",
+  "Population" : 6715984,
+  "Cities" : {
+    "Knoxville" : 186239,
+    "Memphis" : 646889,
+    "Nashville" : 691243
+    }
+}

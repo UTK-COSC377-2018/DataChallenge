@@ -2,25 +2,25 @@ import json
 
 class JSONParser:
 
-    def __init__(self, files):
+    def __init__(self, files=""):
         if type(files) is tuple:
             files = list(files)
         assert((type(files) is str) or (type(files) is list))
-        self.files = files
+        self.files = []
         self.data = []
-        self._parseFiles()
+        if len(files) != 0:
+            if type(files) is str:
+                self.files.append(files)
+            else:
+                self.files.extend(files)
+            self._parseFiles()
         return
 
     def _parseFiles(self):
-        if type(self.files) is str:
-            with open(self.files) as f:
+        for fname in self.files:
+            with open(fname) as f:
                 tmp = json.load(f)
                 self.data.append(tmp)
-        else:
-            for fname in self.files:
-                with open(fname) as f:
-                    tmp = json.load(f)
-                    self.data.append(tmp)
         return
 
     def addJSON(self, fname):

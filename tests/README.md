@@ -22,7 +22,7 @@ __Note:__ When opening these files from your tests, it is highly encouraged to u
 
 ## 4. Manually Running Tests
 
-Before wrapping up with a test, it is highly recommended that you manually run the tests yourself. To do so, run the following command from the __repository's root directory__: 
+Before wrapping up with a set of tests, it is highly recommended that you manually run the tests yourself. To do so, run the following command from the __repository's root directory__: 
 
 ```
 pytest --cov-report term-missing --cov=./DataChallenge -v

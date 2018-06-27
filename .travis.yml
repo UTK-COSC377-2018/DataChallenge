@@ -1,0 +1,30 @@
+sudo: true
+language: python
+
+python:
+    - "3.3"
+    - "3.4"
+    - "3.5"
+    - "3.6"
+
+before_install:
+    - wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    - chmod +x miniconda.sh
+    - bash miniconda.sh -b -p $HOME/mc
+    - export PATH=/home/travis/mc/bin:$PATH
+
+install:
+    - conda config --set always_yes true
+    - conda update conda
+    - conda create -q --name testenv python=$TRAVIS_PYTHON_VERSION
+    - conda install -n testenv pytest pytest-cov
+    - conda install -n testenv coveralls
+# For any new dependancies, add a line based on the following:
+#     conda install -n testenv (NAME_OF_DEPENDANCY)
+    - source activate testenv
+
+script:
+    - pytest --cov=./DataChallenge
+
+after_success:
+    - coveralls

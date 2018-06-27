@@ -1,0 +1,5 @@
+[run]
+#omit = 
+#     If any files need to be omitted from coverage reports
+#     (usually because they are not finished), add the file path
+#     from the root directory of the repo here.

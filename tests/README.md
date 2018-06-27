@@ -12,7 +12,7 @@ In this new file, import the code that is being tested with `from DataChallenge.
 
 ## 2. Writing Your Tests
 
-Once you have a file for your tests, you need to actually write them. Pytest is a powerful testing framework, but it has some notable requirements. First, each test must be written as an individual function. Each function also must be named as follows: `def test_(Descriptor)():`, with "Descriptor" replaced with the name of the test. Finally, pytest uses `assert` statements to determine a test's success. As a result, each test function must have at least one `assert` statement and __no__ `return` statements. If all the assert statements are successful, pytest reports that the test passed. Otherwise, it failed. Pytest will also measure how many lines of the code in the `DataChallenge` directory have been run. This is reported in a coverage report.
+Once you have a file for your tests, you need to actually write them. Pytest is a powerful testing framework, but it has some notable requirements. First, each test must be written as an individual function. Each function also must be named as follows: `def test_(Descriptor)():`, with "Descriptor" replaced with the name of the test. Note that the tests can take __no__ arguments. Finally, pytest uses `assert` statements to determine a test's success. As a result, each test function must have at least one `assert` statement and __no__ `return` statements. If all the assert statements are successful, pytest reports that the test passed. Otherwise, it failed. Pytest will also measure how many lines of the code in the `DataChallenge` directory have been run. This is reported in a coverage report.
 
 ## 3. Adding Extra Files for Tests
 

@@ -8,7 +8,7 @@ Once you enter the `tests` directory, first check if there are pre-existing file
 
 If there are no pre-existing files for your tests, create a new file with a name following this template: `test_(Descriptor).py`, where "(Descriptor)" should be replaced with something that represents what is being tested.
 
-In this new file, import the code that is being tested with `DataChallenge.(Path to Module) import ...`. Also import any other needed modules (`os` and `sys` will be very common).
+In this new file, import the code that is being tested with `from DataChallenge.(Path to Module) import ...`. Also import any other needed modules (`os` and `sys` will be very common).
 
 ## 2. Writing Your Tests
 

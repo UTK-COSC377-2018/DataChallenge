@@ -28,3 +28,8 @@ script:
 
 after_success:
     - coveralls
+
+notifications:
+    slack: cosc377:2buGMnoBZ1ZzKrUXmjNQyhpW
+        on_success: change
+        on_failure: always

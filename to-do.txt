@@ -1,0 +1,7 @@
+* Word2Vec
+* Getting a Database of Universities and their Locations
+  - Finding a good database
+  - Web Scraping
+  - Beautiful Soup
+  - Google Maps API
+* Problem 1: ML (Random Forrest) or Graph (see paper)?

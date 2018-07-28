@@ -30,6 +30,7 @@ class PubGraph:
                 self.graph.merge(venue)
                 self.graph.merge(Relationship(paper, "Published_In", venue) | Relationship(venue, "Published_In", paper))
             else:
+                venue = vexists
                 self.graph.merge(Relationship(paper, "Published_In", vexists) | Relationship(vexists, "Published_In", paper))
             for i in range(len(f["authors"])-1):
                 auth = Node("Author", name=f["authors"][i]["name"], org=f["authors"][i]["org"])
@@ -49,10 +50,14 @@ class PubGraph:
                     rel2 = Relationship(auth2, "CoAuth", auth)
                     self.graph.merge(rel1 | rel2)
             for ref in f["references"]:
-                if ref not in jsonidDict:
-                    jsonidDict[ref] = [ f["id"] ]
+                pexists = self.graph.evaluate("MATCH (p:Paper {{jid:\"{0:s}\"}}) RETURN p".format(ref))
+                if pexists is None:
+                    if ref not in jsonidDict:
+                        jsonidDict[ref] = [ f["id"] ]
+                    else:
+                        jsonidDict[ref].append(f["id"])
                 else:
-                    jsonidDict[ref].append(f["id"])
+                    self.graph.merge(Relationship(paper, "Cites", pexists))
         for idx, node in enumerate(nodeList):
             node["id"] = idx + venueid
             self.graph.push(node)

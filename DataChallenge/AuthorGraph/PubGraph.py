@@ -11,9 +11,10 @@ class PubGraph:
         else:
             self.graph = Graph(bolt=bolt, secure=secure, host=host, http_port=portNum, user=user, password=pswd)
         self.graph.run("CREATE CONSTRAINT ON (a:Author) ASSERT a.id IS UNIQUE")
+        self.graph.run("CREATE CONSTRAINT ON (v:Venue) ASSERT v.id IS UNIQUE")
+        self.graph.run("CREATE CONSTRAINT ON (p:Paper) ASSERT p.id IS UNIQUE")
         nodeList = []
         jsonidDict = {}
-        venueid = len(fnames)
         for idx, fn in enumerate(fnames):
             o = open(fn, "r")
             f = json.load(o)
@@ -22,11 +23,19 @@ class PubGraph:
             if f["id"] in jsonidDict:
                 for jid in jsonidDict[f["id"]]:
                     citer = self.graph.evaluate("MATCH (p:Paper {{jid:\"{0:s}\"}}) RETURN p".format(jid))
-                    self.graph.merge(Relationship(citer, "Cites", paper))
-            vexists = self.graph.evaluate("MATCH (v:Venue {{name:\"{0:s}\"}}) RETURN v".format(f["venue"]))
+                    if citer is not None:
+                        self.graph.merge(Relationship(paper, "Cites", citer))
+            if "venue" in f:
+                vname = f["venue"]
+            elif "isbn" in f:
+                vname = "{0:s} {1:s}".format(f["publisher"], f["isbn"])
+            else:
+                vname = "{0:s} {1:s}".format(f["publisher"], f["doc_type"])
+            vexists = self.graph.evaluate("MATCH (v:Venue {{name:\"{0:s}\"}}) RETURN v".format(vname))
             if vexists is None:
-                venue = Node("Venue", name=f["venue"], id=venueid)
-                venueid += 1
+                venueid = self.graph.evaluate("MATCH (v:Venue) RETURN count(*)")
+                venueid += len(fnames)
+                venue = Node("Venue", name=vname, id=venueid)
                 self.graph.merge(venue)
                 self.graph.merge(Relationship(paper, "Published_In", venue) | Relationship(venue, "Published_In", paper))
             else:
@@ -57,9 +66,43 @@ class PubGraph:
                     else:
                         jsonidDict[ref].append(f["id"])
                 else:
-                    self.graph.merge(Relationship(paper, "Cites", pexists))
+                    self.graph.merge(Relationship(pexists, "Cites", paper))
+        self.numPapers = self.graph.evaluate("MATCH (p:Paper) RETURN count(*)")
+        self.numVenues = self.graph.evaluate("MATCH (v:Venue) RETURN count(*)")
         for idx, node in enumerate(nodeList):
-            node["id"] = idx + venueid
+            node["id"] = idx + self.numPapers + self.numVenues
             self.graph.push(node)
-        self.numNodes = len(nodeList)
+        self.numAuthors = self.graph.evaluate("MATCH (a:Author) RETURN count(*)")
 
+    def numNodes(self):
+        return self.numPapers, self.numVenues, self.numAuthors
+
+    def __getitem__(self, index):
+        if index < self.numPapers:
+            return self.graph.evaluate("MATCH (p:Paper {{id:{0:d} }}) RETURN p".format(index))
+        elif index < self.numPapers+self.numVenues:
+            return self.graph.evaluate("MATCH (v:Venue {{id:{0:d} }}) RETURN v".format(index))
+        elif index < self.numPapers+self.numVenues+self.numAuthors:
+            return self.graph.evaluate("MATCH (a:Author {{id:{0:d} }}) RETURN a".format(index))
+        else:
+            raise IndexError("Index must be less than {0:d}".format(self.numPapers+self.numVenues+self.numAuthors))
+
+    def __len__(self):
+        return self.numPapers + self.numVenues + self.numAuthors
+
+    def getAdj(self, index):
+        adj = []
+        if index < self.numPapers:
+            label = "Paper"
+        elif index < self.numPapers+self.numVenues:
+            label = "Venue"
+        elif index < self.numPapers+self.numVenues+self.numAuthors:
+            label = "Author"
+        else:
+            raise IndexError("Index must be less than {0:d}".format(self.numPapers+self.numVenues+self.numAuthors))
+        cursor = self.graph.run("MATCH (a:{0:s} {{id:{1:d} }})-[]->(b) RETURN b.id".format(label, index))
+        nodes = cursor.data()
+        for n in nodes:
+            adj.append(n["b.id"])
+        adj.sort(reverse=True)
+        return adj

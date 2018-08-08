@@ -1,12 +1,19 @@
-from PubGraph import *
-from py2neo import Graph, Node, Relationship
+from NeoControl import hasNeo
 import numpy as np
 from collections import deque
 
+if hasNeo:
+    from PubGraph import *
+else:
+    from PubGraphNetwork import *
+
 class Scorer:
 
-    def __init__(self, fnames, pswd, bolt=None, secure=False, host="localhost", portNum=7474, portType="http", user="neo4j"):
-        self.graph = PubGraph(fnames, pswd, bolt, secure, host, portNum, portType, user)
+    def __init__(self, fnames, pswd="neo4j", bolt=None, secure=False, host="localhost", portNum=7474, portType="http", user="neo4j"):
+        if hasNeo:
+            self.graph = PubGraph(fnames, pswd, bolt, secure, host, portNum, portType, user)
+        else:
+            self.graph = PubGraphNetwork(fnames)
         self.scores = np.ones(len(self.graph), dtype=np.float64)
         inds = self.graph.numNodes()
         self.paperStart = 0
@@ -44,6 +51,8 @@ class Scorer:
                     self.scores = scoreCpy.copy()
         self.scores = scoreCpy.copy()
 
-    def printScores(self):
-        for s in self.scores:
-            print(s)
+    def __getitem__(self, index):
+        return self.scores[index]
+
+    def getGraph(self):
+        return self.graph

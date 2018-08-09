@@ -1,60 +1,49 @@
 import json
 import re
 import zhon
+import nltk
 from collections import defaultdict
 
-def new_file_json(user_file):
-	##user_file = input('Input a file you would like to check.')
-	file = open(user_file,"r")
-	lines = file.readlines()
-	file.close()
+#Downloads and allows access to 'words' library in nltk module
+nltk.download('words')
 
-	line_string = []
-	for line in lines:
-		line = line.strip()
-		line_string.append(line)
 
-	return line_string
-
+# Creates a new .json file and writes all json-like objects
+# from text file to the new .json file
 def create_json(new_line_string):
 	with open('aminer_papers_0.json', 'w') as outfile:
 		json.dump(new_line_string, outfile)
 
+
+# Writes each json object from .json file into a list 
 def write_json():
 	with open('aminer_papers_0.json', 'r') as infile:
 		data_string = json.load(infile)
 	return data_string
 
+
+# Parse and extract all titles from each json object
+# Function only deals with titles of the English and Spanish
+# language. Any foreign papers, such as Chinese or German, 
+# are not added to the list to simplify the purpose of this
+# program. 
 def create_title_list(data_string):
+	words = set(nltk.corpus.words.words())
 	title_list=[]
 	count = 0
 	for i in range(len(data_string)):
-		if count < 250:
+		if count < 500:
 			data = json.loads(data_string[i])
+			
 			if any('title' in s for s in data):
-			#chinese_text = re.findall('[%s]' % zhon.unicode.HAN_IDEOGRAPHS, data['title'])			
-			#if chinese_text == 0:
-				title_list.append(str(data['title']))
-		count += 1
+				title = " ".join(w for w in nltk.wordpunct_tokenize(data['title']) if w.lower() in words and w.isalpha())
+				title_list.append(str(title))
+				count += 1
 		
 	return title_list
 
-def create_title_dict(data_string):
-	title_dict={}
-	title_key = []
-	count = 0
-	for i in range(len(data_string)):
-		if count != 250:
-			data = json.loads(data_string[i])
-			if any('title' in s for s in data):
-				if any('keywords' in s for s in data):
-					for k in range(len(data['keywords'])):
-						title_key.append(data['keywords'])
-					title_dict[data['title']] = ' '.join(title_key[0])
-					count += 1
-		
-	return title_dict
 
+# Parse and extract all authors from each json object
 def create_author_names(data_string):
 	author_names=[]
 	for i in range(len(data_string)):
@@ -64,15 +53,8 @@ def create_author_names(data_string):
 				author_names.append(data['authors'][k]['name'])
 	return author_names
 	
-def create_author_freq(names_list):
-	author_freq = {}
-	for names in names_list:
-		if names in author_freq:
-			author_freq[names] += 1
-		else:
-			author_freq[names] = 1
-	return author_freq
 
+# Parse and extract all keywords from each json object
 def create_keyword_list(data_string):
 	keyword_list=[]
 	keyword_dict = defaultdict(list)
@@ -85,17 +67,11 @@ def create_keyword_list(data_string):
 					keyword_dict[w].append(data['title'])
 	for j in keyword_dict:
 		keyword_dict[j].sort()
+	keyword_dict =  {k.lower(): v for k, v in keyword_dict.items()}
 	return keyword_dict
 
-def create_keyword_freq(keyword_list):
-	keyword_freq = {}
-	for words in keyword_list:
-		if words in keyword_freq:
-			keyword_freq[words] += 1
-		else:
-			keyword_freq[words] = 1
-	return keyword_freq
 
+# Parse and extract all abstracts from each json object
 def create_abstract_list(data_string):
 	abstract_list=[]
 	abs_doc_link = {}

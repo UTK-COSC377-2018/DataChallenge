@@ -1,6 +1,4 @@
 import json
-import re
-import zhon
 import nltk
 from collections import defaultdict
 

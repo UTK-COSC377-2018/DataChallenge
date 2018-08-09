@@ -1,4 +1,3 @@
-import re
 import test_text_parse
 import test_nltk
 

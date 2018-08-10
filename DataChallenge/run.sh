@@ -1,3 +1,3 @@
 #!/bin/bash
 
-scl enable python33 ./run.sh
+scl enable python33 ./controller.sh

@@ -85,9 +85,9 @@ if [ $# -eq 0 ]; then
     read cont
     if [ ${cont:0:1} == "y" ]; then
         runAuthGraph
-	runDataQuest2
-	runResearchEngine
-	runGeocode
+        runDataQuest2
+        runResearchEngine
+        runGeocode
     fi
     exit 0
 fi

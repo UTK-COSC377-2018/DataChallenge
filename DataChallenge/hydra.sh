@@ -1,3 +1,5 @@
 #!/bin/bash
 
-scl enable python33 ./run.sh
+com="./run.sh ${@:1}"
+
+scl enable python33 "${com}"

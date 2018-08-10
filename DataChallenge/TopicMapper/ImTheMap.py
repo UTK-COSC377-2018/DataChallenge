@@ -103,11 +103,10 @@ while (inpt != "exit"):
             sch = schools[s]
             print(s, ":", topics[inpt][s], ":", sch)
             x,y = map(sch[0], sch[1])
-            #map.plot(x, y, marker='D',color='m')
             map.plot(x, y, marker='o',color='r')
 	
         #show map
-        plt.title('Paper Locations')
+        plt.title('Paper Locations for Topic: ' + inpt)
         plt.show()
     else:
 	    print("Could not find that topic")

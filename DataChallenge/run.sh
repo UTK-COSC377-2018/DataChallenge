@@ -49,7 +49,7 @@ runResearchEngine()
     echo 
     echo
     cd ResearchEngine
-    python researchEngine.py
+    python driver.py
     echo
     cd ..
 }

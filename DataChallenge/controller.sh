@@ -49,8 +49,8 @@ runGeocode()
 {
     echo "Sample outputs for the scripts in the webScrape.Geocode directory already exist."
     echo "Also, running all the code can take a very long time (4-6 hours)."
-    echo "This code also uses the Google Maps API. As a result, it requires an API key to run and produce results."
-    echo "If you haven't already, please add your key to the hcoffey1.geocode.py file."
+    echo "This code also uses the Google Maps API. As a result, it works best with an API key to run and produce results."
+    echo "If you haven't already, it is recommended (but not required) that you add your key to the hcoffey1.geocode.py file."
     echo "Do you want to run this code anyway? (yes/no)"
     printf ">>> "
     read runCode

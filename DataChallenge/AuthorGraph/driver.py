@@ -9,9 +9,11 @@ fnames = os.path.abspath(fnames)
 print()
 
 # Asks the user how many JSONs they want to use
-numJsons = input("How many JSONs would you like to use?\nType \"-1\" to use default.\n>>> ")
+numJsons = int(input("How many JSONs would you like to use?\nType \"-1\" to use default.\n>>> "))
 if numJsons == -1:
+    print("numJsons = -1")
     numJsons = 100
+print(numJsons)
 print()
 
 # Asks the user if they want to change the percentage
@@ -25,7 +27,7 @@ if changePct[0] == "y":
     pct = float(newPct)
 
 # Determines the experts
-expert = ExpertPicker(fnames, pct)
+expert = ExpertPicker(fnames, numJsons, pct)
 
 print()
 # The remainder of this code allows the user to query the results.

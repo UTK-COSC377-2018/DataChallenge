@@ -30,15 +30,14 @@ class ExpertPicker:
           - Note: In py2neo v4.0, the default connection type is bolt. As a result, it is best to set portType to \"bolt\", although you can still use the others.
         * user (Default = \"neo4j\"): the user used to authenticate connection to the neo4j database if neo4j is used.
         """
-        self.fnames = [ line.rstrip("\n") for idx, line in enumerate(open(fnames)) if enumerate < numFiles ]
+        self.fnames = [ line.rstrip("\n") for idx, line in enumerate(open(fnames, "r")) if idx < numFiles ]
         # Dictionaries to store the data by field (key)
         self.papersByField = {}
         self.authScoresByField = {}
         self.graphsByField = {}
         # Splits the papers by field
         for f in self.fnames:
-            fo = open(f)
-            jf = json.load(fo)
+            jf = json.loads(f)
             for fos in jf["fos"]:
                 if fos not in self.papersByField:
                     self.papersByField[fos] = [ f ]

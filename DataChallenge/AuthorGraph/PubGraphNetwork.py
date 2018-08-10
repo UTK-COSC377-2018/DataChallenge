@@ -87,8 +87,7 @@ class PubGraphNetwork:
         jsonidDict = {}
         for idx, fn in enumerate(fnames):
             # Opens the current JSON and adds the paper it represents to the graph if it is not already present
-            o = open(fn, "r")
-            f = json.load(o)
+            f = json.loads(fn)
             if idx not in self.graph:
                 self.graph.add_node(idx, title=f["title"], jid=f["id"])
             # If other papers have cited this paper, add the citations as directed edges from the cited paper to the citing papers

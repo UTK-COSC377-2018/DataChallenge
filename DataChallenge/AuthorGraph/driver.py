@@ -1,19 +1,19 @@
-import sys
+import os
 from ExpertPicker import *
 
 # Asks user for the JSON files
-fnames = input("Enter the JSON files to be used for determining experts.\nYou can either enter the relative or absolute paths of the individual files, separated by spaces, or the relative or absolute path to the directory that holds all your JSONs: ")
+fnames = input("Enter the TXT file containing the JSONs to be used for determining experts.\nYou can either enter the relative or absolute paths of the file.\nNote that, if using a relative path, the path must be relative to the AuthGraph directory.\n>>> ")
 
-# Converts the user input into a list of paths
-fnames = fnames.split()
-
-fnames = [ f for f in fnames if f != "" ]
-
-# If there is only one element, converts fnames to a string.
-if len(fnames) == 1:
-    fnames = fnames[0]
+fnames = os.path.abspath(fnames)
 
 print()
+
+# Asks the user how many JSONs they want to use
+numJsons = input("How many JSONs would you like to use?\nType \"-1\" to use default.\n>>> ")
+if numJsons == -1:
+    numJsons = 100
+print()
+
 # Asks the user if they want to change the percentage
 changePct = input("By default, the top 5% of authors in a field or said to be experts.\nWould you like to change this percentage? (yes/no)\n")
 
@@ -29,7 +29,7 @@ expert = ExpertPicker(fnames, pct)
 
 print()
 # The remainder of this code allows the user to query the results.
-fos = input("Type the field of study that you want to see the experts for.\nIf you want to see the experts across all fields, type \"All\".\nIf you want to see a list of valid fields, type \"fields\".\nWhen you're done, type \"quit()\".\n>>>")
+fos = input("Type the field of study that you want to see the experts for.\nIf you want to see the experts across all fields, type \"All\".\nIf you want to see a list of valid fields, type \"fields\".\nWhen you're done, type \"quit()\".\n>>> ")
 
 while fos != "quit()":
     print()
@@ -39,6 +39,6 @@ while fos != "quit()":
         expert.listFields()
     else:
         expert.printFieldExperts(fos)
-    fos = input("Type the field of study that you want to see the experts for.\nIf you want to see the experts across all fields, type \"All\".\nIf you want to see a list of valid fields, type \"fields\".\nWhen you're done, type \"quit()\".\n>>>")
+    fos = input("Type the field of study that you want to see the experts for.\nIf you want to see the experts across all fields, type \"All\".\nIf you want to see a list of valid fields, type \"fields\".\nWhen you're done, type \"quit()\".\n>>> ")
 
 print()

@@ -45,8 +45,7 @@ class PubGraph:
         jsonidDict = {}
         for idx, fn in enumerate(fnames):
             # Opens the current JSON and adds the paper it represents to the graph if it is not already present
-            o = open(fn, "r")
-            f = json.load(o)
+            f = json.loads(fn)
             paper = Node("Paper", title=f["title"], jid=f["id"], id=idx)
             self.graph.merge(paper)
             # If other papers have cited this paper, add the citations as directed edges from the cited paper to the citing papers.

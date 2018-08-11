@@ -254,7 +254,6 @@ def checkTitles(papers, keyword):
 
 def main():
     if len(sys.argv) != 2 and len(sys.argv) != 3:
-        print('Usage: relatedTopics.py inputFile')
         print('Usage: researchEngine.py inputFile numPapers')
         exit(0)
     num = 0

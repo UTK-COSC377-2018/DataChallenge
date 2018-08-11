@@ -15,7 +15,9 @@ help()
     echo "         * 2       Runs the code in the ResearchEngine directory"
     echo "                   This code helps solve Challenge Problem 2."
     echo "         * 3       Runs the code in webScrape.Geocode directory"
-    echo "                   This code solves Challenge Problem 3."
+    echo "                   This code helps solve Challenge Problem 3."
+    echo "         * 4       Runs the code in TopicMapper"
+    echo "                   This code helps solve Challenge Problem 3."
 }
 
 runAuthGraph()
@@ -54,6 +56,18 @@ runResearchEngine()
     cd ..
 }
 
+runTopicMapper()
+{
+    echo
+    echo "Starting the code from TopicMapper"
+    echo
+    echo
+    cd TopicMapper
+    python driver.py
+    echo
+    cd ..
+}
+
 runGeocode()
 {
     echo
@@ -87,6 +101,7 @@ if [ $# -eq 0 ]; then
         runAuthGraph
         runDataQuest2
         runResearchEngine
+        runTopicMapper
         runGeocode
     fi
     exit 0
@@ -103,14 +118,16 @@ for CLA in $@; do
 	           ;;
         -id) idflag=true
 	     ;;
-	0) if ${idflag}; then runAuthGraph; fi
+        0) if ${idflag}; then runAuthGraph; fi
            ;;
-	1) if ${idflag}; then runDataQuest2; fi
-	   ;;
-	2) if ${idflag}; then runResearchEngine; fi
-	   ;;
-	3) if ${idflag}; then runGeocode; fi
-	   ;;
+        1) if ${idflag}; then runDataQuest2; fi
+           ;;
+        2) if ${idflag}; then runResearchEngine; fi
+           ;;
+        3) if ${idflag}; then runGeocode; fi
+           ;;
+        4) if ${idflag}; then runTopicMapper; fi
+           ;;
         *) ;;
     esac
 done

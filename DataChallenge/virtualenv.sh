@@ -12,7 +12,7 @@ pip install -U nltk
 pip install pandas==0.17.1
 pip install beautifulsoup4
 
-pip install https://github.com/matplotlib/basemap/archive/v1.0.7rel.tar.gz
+#pip install https://github.com/matplotlib/basemap/archive/v1.0.7rel.tar.gz
 
 cd ..
 
